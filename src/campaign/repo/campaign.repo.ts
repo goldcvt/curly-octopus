@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { CampaignExistsError, CampaignNotExists, Visit } from '../domain/types';
 
 // This is an aggregate
+// Shoul've used abstract class with fake implementation for DI to work properly
 export interface CampaignRepositoryInterface {
     // get by generated url
     getBySourceUrl(sourceUrl: string): Promise<CampaignInterface | undefined>;
@@ -25,7 +26,9 @@ export class CampaignFakeRepository implements CampaignRepositoryInterface {
     private campaigns = new Map<string, CampaignInterface>();
     private visits = new Map<string, Visit>();
 
-    async getBySourceUrl(sourceUrl: string) {
+    async getBySourceUrl(
+        sourceUrl: string,
+    ): Promise<CampaignInterface | undefined> {
         return this.campaigns.get(sourceUrl);
     }
 
